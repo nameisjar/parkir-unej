@@ -1,4 +1,3 @@
-{{-- @extends('layouts.header') --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +33,7 @@
                         <li class='toggle-nav visible-lg visible-md visible-sm'><a><i
                                     class='fa fa-lg fa-arrow-left'></i>Hide Menu</a></li>
                         {{-- <li class='dashboard'><a href='#'><i class='fa fa-lg fa-dashboard'></i>Dash</a></li> --}}
-                        <li class='active docs'><a href='#docs'><i class='fa fa-lg fa-folder-open'></i>Docs</a></li>
+                        <li class='active docs'><a href='#docs'><i class='fa fa-lg fa-folder-open'></i>Parkir</a></li>
                         <li class='admin'><a href='#admin'><i class='fa fa-lg fa-user'></i>Admin</a></li>
                         <li class='divider'>
                             <hr>
@@ -50,7 +49,8 @@
                                     class="js-user-name">{{ Auth::user()->name }}</span><b class='caret'></b></a>
                             <ul class='dropdown-menu'>
                                 {{-- <li class='settings'><a href='#settings'><i class='fa fa-lg fa-gear'></i> Settings</a></li> --}}
-                                <li class='settings'><a href='{{ route('logout') }}'><i class='fa fa-lg fa-sign-out'></i>
+                                <li class='settings'><a href='{{ route('logout') }}'><i
+                                            class='fa fa-lg fa-sign-out'></i>
                                         Logout</a></li>
                             </ul>
                         </li>
@@ -63,10 +63,35 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <h2>Documents</h2>
-                            <hr />
+                            <h2>Parkiran Fasilkom</h2>
+                            <form method="POST" action="{{ route('parkir_post') }}">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="plat_nomor">Plat Nomor:</label>
+                                    <input type="text" class="form-control" id="plat_nomor" name="plat_nomor"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jenis_kendaraan">Jenis Kendaraan:</label>
+                                    <select class="form-control" id="jenis_kendaraan" name="jenis_kendaraan" required>
+                                        <option value="1">Motor</option>
+                                        <option value="2">Mobil</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="area">Area:</label>
+                                    <select class="form-control" id="area" name="area" required>
+                                        <option value="1">A</option>
+                                        <option value="2">B</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
+                                <button type="submit" class="btn btn-primary">Tambah Data</button>
+                            </form>
                         </div>
                     </div>
+
+                    <hr />
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-xs-12 js-content">
                             <div class="docs-table">
@@ -74,12 +99,12 @@
                                     data-search="true" data-striped="true">
                                     <thead>
                                         <tr>
-                                            <th data-field="Type">Type</th>
-                                            <th data-field="Name">Name</th>
-                                            <th data-field="Description">Description</th>
-                                            <th data-field="Tags">Tags</th>
-                                            <th data-field="LastViewed">Last Viewed</th>
-                                            <th data-field="Expiration">Expiration</th>
+                                            <th data-field="Waktu Masuk">Waktu Masuk</th>
+                                            <th data-field="Plat Nomor">Plat Nomor</th>
+                                            <th data-field="Jenis Kendaraan">Jenis Kendaraan</th>
+                                            <th data-field="Area">Area</th>
+                                            <th data-field="Waktu Keluar">Waktu Keluar</th>
+                                            <th data-field="Admin">Admin</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -91,31 +116,15 @@
                                             <td></td>
                                             <td></td>
                                         </tr>
-                                        {{-- <tr>
-					
-                    <td><i class="fa fa-file-powerpoint-o"></i></td>
-                    <td>EVAMs presentation</td>
-                    <td>This is presentation for the EVAM occuring later this month</td>
-                    <td>EVAM</td>
-                    <td>a day ago</td>
-                    <td>Sep 13, 2015</td>
-                  </tr>
-                  <tr>
-                    <td><i class="fa fa-file-word-o"></i></td>
-                    <td>Xmas Party list</td>
-                    <td>List of all the people who will be attending the holiday party</td>
-                    <td>list</td>
-                    <td>a few mins ago</td>
-                    <td>Dec 25, 2015</td>
-                  </tr> --}}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
+
 
         </div>
     </body>

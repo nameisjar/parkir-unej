@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+// Route::get('/', function () {
+//     return view('dashboard');
+// });
 
 
 Route::middleware(['auth'])->group(function () {
@@ -26,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return view('dashboard');
     });
+    route::get('/parkir', [UserController::class, 'index1'])->name('parkir');
+    route::post('/parkir_post', [UserController::class, 'create'])->name('parkir_post');
 });
 
 
