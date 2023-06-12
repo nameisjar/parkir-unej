@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisKendaraan;
 use App\Models\Parkir;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,45 +16,52 @@ class UserController extends Controller
     {
         return view('signin');
     }
-
     public function index1()
     {
-        // Mengambil semua data parkiran dari database
-        $parkiran = Parkir::all();
+        return view('dashboard');
+    }
 
-        // Mengirim data parkiran ke view untuk ditampilkan
-        return view('dashboard', compact('parkiran'));
+    public function showTambahParkir()
+    {
+        $parkir = Parkir::all();
+        $jenis_kendaraan = JenisKendaraan::all();
+
+        return view('dashboard', compact('parkir', 'jenis_kendaraan'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function tambahParkir(Request $request)
     {
 
         // Validasi input
-        $validatedData = $request->validate([
+        $jenisKendaraan = $request->jenis_kendaraan;
+
+        $jumlahParkirMotor = Parkir::where('id_jenis_kendaraan', 1)->count();
+        $jumlahParkirMobil = Parkir::where('id_jenis_kendaraan', 2)->count();
+
+        if ($jenisKendaraan == 1 && $jumlahParkirMotor >= 5) {
+            return redirect()->back()->with('error', 'Batas jumlah parkir motor telah tercapai.');
+        }
+
+        if ($jenisKendaraan == 2 && $jumlahParkirMobil >= 5) {
+            return redirect()->back()->with('error', 'Batas jumlah parkir mobil telah tercapai.');
+        }
+
+        $validate = $request->validate([
             'plat_nomor' => 'required',
             'jenis_kendaraan' => 'required',
-            'area' => 'required',
-            'id_user' => 'required',
         ]);
 
-        $plat_nomor = $validatedData['plat_nomor'];
-        $jenis_kendaraan = $validatedData['jenis_kendaraan'];
-        $area = $validatedData['area'];
-        $id_user = $validatedData['id_user'];
+        $parkir = new Parkir();
+        $parkir->plat_nomor = $validate['plat_nomor'];
+        $parkir->id_jenis_kendaraan = $validate['jenis_kendaraan'];
+        $parkir->id_admin = 1;
 
-        // Buat entri baru dalam database
-        $parkir = new Parkir;
-        $parkir->plat_nomor = $plat_nomor;
-        $parkir->id_jenis_kendaraan = $jenis_kendaraan;
-        $parkir->id_area = $area;
-        $parkir->id_user = $id_user;
         $parkir->save();
 
-        // Redirect atau berikan respons sesuai kebutuhan
-        return redirect()->back()->with('success', 'Data parkiran berhasil ditambahkan');
+        return redirect()->back()->with('success', 'Data parkir berhasil ditambahkan.');
     }
 
 

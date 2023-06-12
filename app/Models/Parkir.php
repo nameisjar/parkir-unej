@@ -8,19 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Parkir extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
 
-    protected $guarded = [];
+    public function jenis_kendaraan()
+    {
+        return $this->belongsTo(Jenis_Kendaraan::class, 'id_jenis_kendaraan');
+    }
 
-    public function jeniskendaraan()
+    public function admin()
     {
-        return $this->belongsTo(JenisKendaraan::class);
-    }
-    public function area()
-    {
-        return $this->belongsTo(Area::class);
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class, 'id_admin');
     }
 }

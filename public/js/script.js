@@ -1,9 +1,27 @@
-function activateNav() {
-    $('ul.nav > li').on('click', function (evt) {
-      if ($(evt.currentTarget).hasClass('toggle-nav')) return;
-      $(evt.currentTarget).addClass('active').siblings().removeClass('active');
-    });
+var tombolTambah = document.getElementById("tombolTambah");
+var modal = document.getElementById("modalTambah");
+var formElement = document.getElementById("formElement");
+var closeButton = document.getElementsByClassName("close")[0];
+
+// Saat tombol "Tambah" ditekan, tampilkan modal
+tombolTambah.onclick = function() {
+  modal.style.display = "block";
+}
+
+formElement.action = "{{ route('tambahParkir') }}"
+
+// Saat tombol "Tutup" atau area di luar modal ditekan, sembunyikan modal
+closeButton.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
   }
+}
+
+
   
   
   var docs = [
@@ -57,3 +75,6 @@ function activateNav() {
   }
   
   init();
+
+
+

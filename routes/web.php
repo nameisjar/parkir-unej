@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,25 +14,30 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::get('/', function () {
-//     return view('dashboard');
+//     return view('welcome');
+// });
+
+// Route::get('/', function () {
+//     return view('login');
 // });
 
 
-Route::middleware(['auth'])->group(function () {
-    // Route-rute yang memerlukan autentikasi di sini
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // ...
-    Route::get('/', function () {
-        return view('dashboard');
-    });
-    route::get('/parkir', [UserController::class, 'index1'])->name('parkir');
-    route::post('/parkir_post', [UserController::class, 'create'])->name('parkir_post');
+
+Route::post('/login', [App\Http\Controllers\AkunController::class, 'login'])->name('login');
+Route::get('/logout', [App\Http\Controllers\AkunController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth:admin'])->group(function () {
+
+
+    Route::get('/parkir', [App\Http\Controllers\ParkirController::class, 'showTambahParkir'])->name('showTambahParkir');
+    Route::post('/parkir', [App\Http\Controllers\ParkirController::class, 'tambahParkir'])->name('tambahParkir');
+
+    Route::get('/get-sisa-parkir', [App\Http\Controllers\ParkirController::class, 'getSisaParkir'])->name('getSisaParkir');
+
+
+    Route::get('/hapusParkir/{id}', [App\Http\Controllers\ParkirController::class, 'hapusParkir'])->name('hapusParkir');
 });
+Route::middleware(['guest:admin'])->group(function () {
 
-
-route::get('/signin', [UserController::class, 'index'])->name('signin_index');
-route::post('/signin-post', [UserController::class, 'store'])->name('signin_post');
-
-
-
-route::get('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::get('/', [App\Http\Controllers\AkunController::class, 'index'])->name('login_index');
+});
